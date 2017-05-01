@@ -22,20 +22,21 @@ public class Test_RoundRobin {
 		}
 		scan.close();
 		kb.close();
-		Node prev = list.head;
-		list.head = list.head.next;
+//		Node prev = list.head;
+//		list.head = list.head.next;
+//
+//		while(prev.id < list.head.id){
+//			prev = list.head;
+//			list.head = list.head.next;
+//		}
+
+//		Node cur = list.head;
+//		for(int ix = 0; ix < list.size; ix++){
+//			System.out.println(cur.id + " " +cur.time);
+//			cur = cur.next;
+//		}
 		
-		while(prev.id < list.head.id){
-			prev = list.head;
-			list.head = list.head.next;
-		}
-		
-		for(int ix = 0; ix < list.size; ix++){
-			System.out.println(list.head.id + " " +list.head.time);
-			list.head = list.head.next;
-		}
-		
-		//roundMinus(args[1]);
+		list.roundMinus(Integer.parseInt(args[1]));
 		
 	}
 

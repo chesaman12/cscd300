@@ -1,8 +1,9 @@
 package roundRobin;
 
-public class CircularLinkedList{
+public class CircularLinkedList {
 	public int size;
 	public Node head;
+	public Node tail;
 	public Node prev;
 
 public CircularLinkedList(){
@@ -14,7 +15,7 @@ public CircularLinkedList(){
 public void addFirst(int id, int time){
 	//pre conditions
 	Node nn = new Node(null, id, time);
-	this.head = nn;
+	this.head = this.tail = nn;
 	nn.next = nn;
 	size++;
 }
@@ -24,94 +25,99 @@ public void insert(int id, int time){//insert and sort on the fly
 	if(this.head == null){ //first node to add
 		addFirst(id,time);
 	
-	}else if(this.head.next == this.head){ //2nd node to add
-		//if(nn.id > this.head.id){         
-			addAfter(nn);//add nn after head
-		//}else{
-			//addBefore(nn);//add nn before head
-		//}
+//	}else if(this.head.next == this.head){ //2nd node to add
+//		if(nn.id > this.head.id){
+//			addAfter(nn);//add nn after head
+//		}else{
+//			addBefore(nn);//add nn before head
+//		}
 	}else{
-		//Node cur = this.head;
-		boolean bool = true;
-		while(bool){//after 2nd node
-		
-			if(nn.id > head.id && nn.id < head.next.id){//between 2 nodes that arent the lowest or highest
+		Node cur = this.head;
+		boolean added = false;
+		while(!added){//after 2nd node
 
-				addAfter(nn);
-				bool = false; 
-				//add between cur and cur.next
-			}else if(this.head.id < this.head.next.id){  //between first and last element
-				//if(nn.id > this.head.id){ //1 2 3 4
+//			System.out.println(nn.id + ", " + cur.id);
 
-					addAfter(nn);
-					bool = false;
-				//}
-					
-			}else{
-				head = head.next;
+			if(nn.id < head.id){
+				head = nn;
+				nn.next = cur;
+				tail.next = head;
+				size++;
+				added = true;
+			}else if(nn.id > cur.id && (nn.id < cur.next.id || cur.next == head)) {
+
+				if(cur.next == head){
+					tail = nn;
+				}
+
+
+				addAfter(cur, nn);
+
+
+
+				added = true;
 			}
+
+			cur = cur.next;
 		}
 	}
 }
 
-public void addBefore(Node v) {//add before
-	if(v == null){
+public void addAfter(Node cur, Node nn) {//add after
+//	System.out.println("add after: " + cur.id + ", " + nn.id);
+	if(nn == null){
 		return; //throw exception
 	}
-	if(size <= 1){
-		addAfter(v);
-	}else{
-		Node cur;
-		for(cur = head.next; cur.next != null; cur = cur.next){};
-		v.next = head;
-		cur.next = v;
-		size++;
-	}
-}
-
-public void addAfter(Node v) {//add after
-	if(v == null){
-		return; //throw exception
-	}
-	v.next = head.next;
-	head.next = v;
+	nn.next = cur.next;
+	cur.next = nn;
 	size++;
-	
 }
 
 public void roundMinus(int sub){
 	Node cur = this.head;
-	if(cur.next == null){
+	if(size == 1){
 		
 		System.out.println(cur.id);
 		//remove cur
 	}
-	while(cur.next!= null){
-		cur.id = cur.id - sub;
-		if(cur.id <= 0){
+	while(size > 0){
+		cur.time = cur.time - sub;
+		System.out.println(cur);
+		if(cur.time <= 0){
 			
-			System.out.println(cur.id);
-			//remove cur
-			cur = cur.next;
-		}else{
-			cur = cur.next;
+			System.out.println("removing: " + cur.id);
+			remove(cur);
 		}
-		
+
+		cur = cur.next;
+
 	}
 }
 
-public void removeBefore () {
+public void remove (Node nr) {
 	  if (size == 0) return;
 	  if (size == 1) {
 	   head = null;
 	   size --;
 	  }
-	  else if (size == 2) removeAfter();
+	  else if(nr == head){
+	  	head = tail.next = nr.next;
+	  	size --;
+	  }
 	  else {
-	   Node cur;
-	   for (cur = head.next; cur.next.next != head; cur = cur.next)
-	    ;
-	   cur.next = this.head;
+	   Node prev = head;
+
+	   while(prev.next != nr){
+	   	prev = prev.next;
+	   }
+
+	   if(prev.next == tail){
+	   	prev.next = head;
+	   	tail = prev;
+	   }else {
+	   	prev.next = nr.next;
+	   }
+
 	   size --;
 	  }
 	 }
