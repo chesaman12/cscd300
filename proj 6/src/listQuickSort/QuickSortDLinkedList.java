@@ -74,21 +74,25 @@ public class QuickSortDLinkedList {
 
 			// left = left.next;
 		}
-		//if(left.data.compareTo(pivot.data) < 0){
-		//System.out.println(index.data + " " +pivot.data);
+		//{
+		//System.out.println(index.data_works + " " +pivot.data_works);
 		Node cur = head;
-		/*for (int ix = 0; ix < size; ix++) {
-			cur = cur.next;
-			System.out.println(cur.data);
-		}*/
-			swap(index, pivot);
-			
+//		for (int ix = 0; ix < size; ix++) {
+//			cur = cur.next;
+//			System.out.println(cur.data);
+//		}
+//		System.out.println("-------------------------------------------------------------");
 
+		if(pivot.data != null && index.data != null && pivot.data.compareTo(index.data) < 0){
+			swap(index, pivot);
 			if (index == left) {
 				left = pivot;
 			}
-		//}test
-		right = index;
+			//}test
+			right = index;
+		}
+
+
 		Node[] segments = new Node[] { pivot, left, right };
 		return segments;
 	}
@@ -99,7 +103,7 @@ public class QuickSortDLinkedList {
 		} else {
 
 			if (pos1.getNext() == pos2) {
-				//System.out.println("pos1 " + pos1.data + " pos2 " + pos2.data);
+				//System.out.println("pos1 " + pos1.data_works + " pos2 " + pos2.data_works);
 				Node before = pos1.prev;
 				Node after = pos2.next;
 
@@ -111,7 +115,7 @@ public class QuickSortDLinkedList {
 				pos2.prev = before;
 
 			} else {
-				//System.out.println("pos1 " + pos1.data + " pos2 " + pos2.data);
+				//System.out.println("pos1 " + pos1.data_works + " pos2 " + pos2.data_works);
 				Node before_one = pos1.prev;
 				Node after_one = pos1.next;
 				Node before_two = pos2.prev;
